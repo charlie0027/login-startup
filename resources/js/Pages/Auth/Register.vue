@@ -1,9 +1,14 @@
 <script setup>
-import Card from '@/Components/Card.vue';
+import Guest from '@/Components/Guest.vue';
 import ButtonCom from '../../Components/ButtonCom.vue';
 import Input from '@/Components/Input.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import Error from '../../Components/Error.vue';
+
+
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 const form = useForm({
     first_name: '',
@@ -21,10 +26,14 @@ const form = useForm({
 <template>
 
     <Head title="Register"></Head>
-    <Card class="lg:w-[60%] md:w-[70%] sm:w-[80%]">
+    <Guest class="lg:w-[60%] md:w-[70%] sm:w-[80%]">
         <div class="text-3xl font-bold text-center pb-6 pt-4 uppercase">Registration Form</div>
         <div class="px-10">
-            <form @submit.prevent="form.post('/register')">
+            <form @submit.prevent="form.post('/register', {
+                onError: () => {
+                    toast.error('Please check form for corrections', { icon: 'fas fa-exclamation-circle' })
+                }
+            })">
                 <div class="md:grid md:grid-cols-10 md:gap-4 space-y-2 ">
                     <div class="col-span-3">
                         <Input type="text" id="first_name" v-model="form.first_name" label="First Name"></Input>
@@ -42,7 +51,7 @@ const form = useForm({
                     <div class="col-span-1">
                         <label class="w-25 text-sm font-bold text-gray-700 dark:text-white uppercase">
                             <span class="block md:hidden">Name Extension</span>
-                            <span class="hidden md:inline">&nbsp;</span>
+                            <span class="hidden md:block">&nbsp;</span>
                         </label>
                         <input type="text" id="name_extension" v-model="form.name_extension"
                             class="w-full rounded-md border-2 border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-0 focus:border-cyan-700 focus:border-2"
@@ -86,5 +95,5 @@ const form = useForm({
 
             </div>
         </div>
-    </Card>
+    </Guest>
 </template>

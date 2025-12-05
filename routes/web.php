@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Libraries\UserController;
 use App\Http\Controllers\Libraries\UserRoleController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
@@ -15,6 +17,14 @@ Route::middleware('user.redirect')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     Route::get('/register', [RegistrationController::class, 'index']);
     Route::post('/register', [RegistrationController::class, 'register']);
+
+    // Forgot password: show + submit
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+
+    // Reset password: show + submit
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
 
 Route::middleware('login.message')->group(function () {
@@ -41,8 +51,11 @@ Route::middleware('login.message')->group(function () {
 });
 
 
-Route::get('/api/barangays/{citymunCode}', function ($citymunCode) {
-    return \App\Models\RefBarangay::where('citymunCode', $citymunCode)
-        ->orderBy('brgyDesc')
-        ->get();
-});
+// for sampling only
+// Route::get('/sample-email', function () {
+//     return view('emails.reset_password', [
+//         'url' => url('/reset-password/sample-token'),
+//         'last_name' => 'Doe',
+//         'first_name' => 'John',
+//     ]);
+// });

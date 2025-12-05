@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\ResetPasswordNotification;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -54,5 +57,15 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->hasMany(UserRole::class);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = url(route('password.reset', [
+            'token' => $token,
+            'email' => $this->email,
+        ], false));
+
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
