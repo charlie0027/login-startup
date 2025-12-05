@@ -3,7 +3,7 @@
 import Input from '@/Components/Input.vue';
 import ButtonCom from '@/Components/ButtonCom.vue';
 import { Link, Head, useForm, usePage } from '@inertiajs/vue3';
-import Guest from '@/Components/Guest.vue';
+import Guest from '@/Pages/Layouts/Guest.vue'
 import Error from '../Components/Error.vue';
 
 import { useToast } from "vue-toastification";

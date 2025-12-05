@@ -1,5 +1,5 @@
 <script setup>
-import Guest from '@/Components/Guest.vue';
+import Guest from '@/Pages/Layouts/Guest.vue'
 import ButtonCom from '../../Components/ButtonCom.vue';
 import Input from '@/Components/Input.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';

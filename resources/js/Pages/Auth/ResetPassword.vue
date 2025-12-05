@@ -1,6 +1,6 @@
 <script setup>
 import { useForm, usePage, Head } from '@inertiajs/vue3'
-import Guest from '@/Components/Guest.vue'
+import Guest from '@/Pages/Layouts/Guest.vue'
 import { useToast } from 'vue-toastification'
 import Error from '../../Components/Error.vue'
 

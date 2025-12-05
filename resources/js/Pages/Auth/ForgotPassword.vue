@@ -1,5 +1,5 @@
 <script setup>
-import Guest from '@/Components/Guest.vue'
+import Guest from '@/Pages/Layouts/Guest.vue'
 import { useForm, Link, Head } from '@inertiajs/vue3'
 
 import { useToast } from "vue-toastification";

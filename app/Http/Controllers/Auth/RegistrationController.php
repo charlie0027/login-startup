@@ -47,6 +47,17 @@ class RegistrationController extends Controller
             'created_by' => 0
         ]);
 
+        // // Send verification email
+        // if (config('auth.require_email_verification')) {
+        //     // Send verification email and redirect to notice
+        //     $user->sendEmailVerificationNotification();
+        //     return redirect()->route('verification.notice');
+        // } else {
+        //     // Skip verification, go straight to dashboard
+        //     $user->forceFill(['email_verified_at' => now()])->save();
+        //     return redirect()->route('dashboard');
+        // }
+
         //attempt to login and generate session
         if (Auth::attempt($request->only('username', 'password'))) {
             $request->session()->regenerate();

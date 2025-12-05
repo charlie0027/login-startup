@@ -8,7 +8,11 @@ use App\Http\Controllers\Libraries\UserController;
 use App\Http\Controllers\Libraries\UserRoleController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Setting\SettingController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 Route::redirect('/', '/login');
 
@@ -27,10 +31,16 @@ Route::middleware('user.redirect')->group(function () {
     Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
 
-Route::middleware('login.message')->group(function () {
+$middleware = ['login.message'];
+
+if (config('auth.require_email_verification')) {
+    $middleware[] = 'verified';
+}
+
+Route::middleware(['auth', 'login.message', 'email.verification.toggle'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     // Libraries/Users
     Route::get('/libraries/users', [UserController::class, 'index'])->name('libraries.user_index');
     Route::post('/libraries/users', [UserController::class, 'store'])->name('libraries.user_store');
@@ -48,7 +58,35 @@ Route::middleware('login.message')->group(function () {
     Route::post('/libraries/user_roles', [UserRoleController::class, 'store'])->name('libraries.user_role_store');
     Route::put('/libraries/user_roles/{id}', [UserRoleController::class, 'update'])->name('libraries.user_role_update');
     Route::put('/libraries/user_roles/{id}', [UserRoleController::class, 'deactivate'])->name('libraries.user_role_deactivate');
+
+    //Settings/Settings
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings/email-verification', [SettingController::class, 'updateEmailVerification'])->name('settings.updateEmailVerification');
 });
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('login.message');
+
+// 1) Verification notice page (shown to logged-in, unverified users)
+Route::get('/email/verify', function () {
+    if (Auth::user() && Auth::user()->email_verified_at) {
+        return redirect()->route('dashboard');
+    }
+    return inertia('Auth/VerifyEmail'); // Inertia page component
+})->middleware('auth')->name('verification.notice');
+
+// 2) Handle the email verification link (signed URL the user clicks from email)
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill(); // sets email_verified_at
+
+    return redirect()->route('dashboard')->with('message', 'Email verified!');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// 3) Resend verification email
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
 // for sampling only
