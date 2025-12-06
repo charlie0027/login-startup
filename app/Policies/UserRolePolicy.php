@@ -26,4 +26,12 @@ class UserRolePolicy
             ? Response::allow('Welcome, admin! You can view all users.')
             : Response::deny('Only administrators can view this section.');
     }
+
+    public function updateSettings(User $user): Response
+    {
+        $authRoles = Auth::user()->userDetail->roles ?? []; // already an array
+        return array_intersect([1, 4], $authRoles)
+            ? Response::allow('Welcome, admin! You can view all users.')
+            : Response::deny('Only administrators can view this section.');
+    }
 }

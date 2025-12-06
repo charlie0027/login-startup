@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
                 return [
                     'viewLibraries' => Gate::allows('viewAny', UserDetail::class),
                     'updateUserDetails' => Gate::allows('updateUserDetails', UserDetail::class),
+                    'updateSettings' => Gate::allows('updateSettings', UserDetail::class)
                 ];
             },
         ]);

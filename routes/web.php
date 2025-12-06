@@ -8,11 +8,11 @@ use App\Http\Controllers\Libraries\UserController;
 use App\Http\Controllers\Libraries\UserRoleController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\TwoFactorAuthController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Setting\SettingController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Http\Request;
 
 Route::redirect('/', '/login');
 
@@ -31,13 +31,7 @@ Route::middleware('user.redirect')->group(function () {
     Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
 
-$middleware = ['login.message'];
-
-if (config('auth.require_email_verification')) {
-    $middleware[] = 'verified';
-}
-
-Route::middleware(['auth', 'login.message', 'email.verification.toggle'])->group(function () {
+Route::middleware(['auth', 'login.message', 'email.verification.toggle', 'two.factor.auth'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -62,31 +56,19 @@ Route::middleware(['auth', 'login.message', 'email.verification.toggle'])->group
     //Settings/Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/email-verification', [SettingController::class, 'updateEmailVerification'])->name('settings.updateEmailVerification');
+    Route::post('/settings/two-factor-auth', [SettingController::class, 'updateTwoFactorAuth'])->name('settings.updateTwoFactorAuth');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('login.message');
 
-// 1) Verification notice page (shown to logged-in, unverified users)
-Route::get('/email/verify', function () {
-    if (Auth::user() && Auth::user()->email_verified_at) {
-        return redirect()->route('dashboard');
-    }
-    return inertia('Auth/VerifyEmail'); // Inertia page component
-})->middleware('auth')->name('verification.notice');
+// Verify Email
+Route::get('/email/verify', [VerifyEmailController::class, 'verification_notice'])->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'handle_link'])->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend_verification_email'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-// 2) Handle the email verification link (signed URL the user clicks from email)
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill(); // sets email_verified_at
-
-    return redirect()->route('dashboard')->with('message', 'Email verified!');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-// 3) Resend verification email
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+// Two Factor Authentication
+Route::get('/two-factor', [TwoFactorAuthController::class, 'index'])->middleware('auth')->name('two-factor.index');
+Route::post('/two-factor', [TwoFactorAuthController::class, 'verify'])->middleware('auth')->name('two-factor.verify');
 
 
 // for sampling only

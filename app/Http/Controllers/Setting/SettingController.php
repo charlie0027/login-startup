@@ -13,6 +13,7 @@ class SettingController extends Controller
     {
         return Inertia::render('Settings/Setting', [
             'require_email_verification' => (bool) SetEmailVerification::get('require_email_verification', true),
+            'require_two_factor_auth' => (bool) SetEmailVerification::get('require_two_factor_auth', true),
         ]);
     }
 
@@ -28,5 +29,18 @@ class SettingController extends Controller
         $setting->update(['value' => $value]);
 
         return back()->with('success', 'Email verification setting updated!');
+    }
+
+    public function updateTwoFactorAuth(Request $request)
+    {
+        if ($request->requireTwoFactorAuth == true) {
+            $value = 1;
+        } else {
+            $value = 0;
+        }
+        $setting = SetEmailVerification::where('key', 'require_two_factor_auth')->first();
+        $setting->update(['value' => $value]);
+
+        return back()->with('success', 'Two Factor Authentication setting updated!');
     }
 }

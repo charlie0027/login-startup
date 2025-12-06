@@ -7,6 +7,7 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\RequireLoginWithMessage;
 use App\Http\Middleware\SetEmailVerification;
+use App\Http\Middleware\VerifyTwoFactorAuthMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'login.message' => RequireLoginWithMessage::class,
             'user.redirect' => RedirectIfAuthenticated::class,
             'email.verification.toggle' => SetEmailVerification::class,
+            'two.factor.auth' => VerifyTwoFactorAuthMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

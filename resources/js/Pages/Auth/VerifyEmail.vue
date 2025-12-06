@@ -26,7 +26,7 @@ function logout() {
     <Guest>
         <div class="container p-4">
             <h1 class="text-2xl font-bold mb-4 text-center uppercase">Verify your email</h1>
-            <p class="mb-4">We’ve sent a verification link to {{ email }}. Please click it to continue.</p>
+            <p class="mb-4">We’ve sent a verification link to email. Please click it to continue.</p>
 
             <div class="flex gap-2 justify-end">
                 <ButtonCom class="px-3 py-1 bg-gray-500 hover:bg-gray-700 text-white" @click="resend"
