@@ -57,15 +57,24 @@ function toggleTwoFactorAuthentication() {
 
     <Head title="Settings"></Head>
     <MainLayout>
-        <div class=" border rounded p-4">
+        <div class="border rounded p-4">
             <div class="flex items-center mb-4">
                 <h1 class="text-2xl uppercase mr-2">Security Settings</h1>
                 <Tooltip>
-                    <p>Email Verification Enabled:</p>
+                    <div v-if="!can.update" class="bg-red-200 rounded p-2">
+                        <span class="text-xs text-red-500 mb-4 font-bold text-justify">*Note:
+                            Your
+                            current
+                            role is preventing
+                            you
+                            from updating the settings. Please contact your System Administrator for privileges.</span>
+                    </div>
+                    <p class="mt-1 font-bold">If Email Verification Enabled:</p>
                     <p class="mt-1">An email will be sent if the user’s email is not yet verified.</p>
-                    <p class="mt-2">Two Factor Authentication Enabled:</p>
+                    <p class="mt-2 font-bold">If Two Factor Authentication Enabled:</p>
                     <p class="mt-1">A random code will be sent via email to proceed with login.</p>
                 </Tooltip>
+
             </div>
 
             <div class="grid grid-cols-2">
@@ -74,7 +83,7 @@ function toggleTwoFactorAuthentication() {
                         <!-- Email Verification Toggle -->
                         <InputToggle v-model="form.requireEmailVerification" label="Require Email Verification"
                             enabledText="Enabled" disabledText="Disabled" color="green"
-                            @update:modelValue="toggleEmailVerification" :disabled="!can.updateSettings" />
+                            @update:modelValue="toggleEmailVerification" :disabled="!can.update" />
                     </div>
                 </div>
 
@@ -83,7 +92,7 @@ function toggleTwoFactorAuthentication() {
                     <div class="flex">
                         <InputToggle v-model="form.requireTwoFactorAuth" label="Require Two Factor Authentication"
                             enabledText="Enabled" disabledText="Disabled" color="blue"
-                            @update:modelValue="toggleTwoFactorAuthentication" :disabled="!can.updateSettings" />
+                            @update:modelValue="toggleTwoFactorAuthentication" :disabled="!can.update" />
                     </div>
 
 

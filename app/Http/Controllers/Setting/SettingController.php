@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\SetEmailVerification;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class SettingController extends Controller
 {
     public function index()
     {
+        // Will throw AuthorizationException if denied
+        Gate::authorize('view', UserDetail::class);
         return Inertia::render('Settings/Setting', [
             'require_email_verification' => (bool) SetEmailVerification::get('require_email_verification', true),
             'require_two_factor_auth' => (bool) SetEmailVerification::get('require_two_factor_auth', true),
@@ -19,6 +23,8 @@ class SettingController extends Controller
 
     public function updateEmailVerification(Request $request)
     {
+        // Will throw AuthorizationException if denied
+        Gate::authorize('update', UserDetail::class);
         // dd($request->all());
         if ($request->requireEmailVerification == true) {
             $value = 1;
@@ -33,6 +39,8 @@ class SettingController extends Controller
 
     public function updateTwoFactorAuth(Request $request)
     {
+        // Will throw AuthorizationException if denied
+        Gate::authorize('update', UserDetail::class);
         if ($request->requireTwoFactorAuth == true) {
             $value = 1;
         } else {

@@ -220,19 +220,17 @@ const openUpdateRoleModal = (user) => {
                 <template v-slot:table_td="{ row, col }">
                     <template v-if="col.key === 'action'">
                         <div class="flex space-x-2">
-                            <ButtonSmall v-if="can.updateUserDetails" class="bg-blue-500 hover:bg-blue-700 text-white"
-                                @click="openEditModal(row)">
+                            <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white" @click="openEditModal(row)">
                                 <i class="fa fa-pencil-square"></i><span class="hidden md:inline">Edit</span>
                             </ButtonSmall>
-                            <ButtonSmall v-if="can.updateUserDetails" class="bg-red-500 hover:bg-red-600 text-white"
-                                @click="openDeleteModal(row)">
+                            <ButtonSmall class="bg-red-500 hover:bg-red-600 text-white" @click="openDeleteModal(row)">
                                 <i class="fa fa-trash"></i><span class="hidden md:inline">Delete</span>
                             </ButtonSmall>
-                            <ButtonSmall v-if="can.updateUserDetails"
-                                class="bg-orange-500 hover:bg-orange-600 text-white" @click="openChangePwModal(row)">
+                            <ButtonSmall class="bg-orange-500 hover:bg-orange-600 text-white"
+                                @click="openChangePwModal(row)">
                                 <i class="fa fa-unlock"></i><span class="hidden md:inline">Change Password</span>
                             </ButtonSmall>
-                            <ButtonSmall v-if="can.updateUserDetails" class="bg-blue-500 hover:bg-blue-700 text-white"
+                            <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white"
                                 @click="openUpdateRoleModal(row)">
                                 <i class="fa fa-user-plus"></i><span class="hidden md:inline">Update Role</span>
                             </ButtonSmall>
@@ -411,7 +409,7 @@ const openUpdateRoleModal = (user) => {
                                 id="birthdate"></Input>
                             <Error v-if="form_edit.errors['user_detail.birthdate']">{{
                                 form_edit.errors['user_detail.birthdate']
-                                }}</Error>
+                            }}</Error>
                         </div>
                         <div>
                             <SelectInput v-model="form_edit.user_detail.gender" label="Gender" id="gender">
@@ -445,7 +443,7 @@ const openUpdateRoleModal = (user) => {
                                 placeholder="Street" title="Street"></Input>
                             <Error v-if="form_edit.errors['user_detail.street']">{{
                                 form_edit.errors['user_detail.street']
-                                }}
+                            }}
                             </Error>
                         </div>
                         <div class="col-span-2">
@@ -461,7 +459,7 @@ const openUpdateRoleModal = (user) => {
                             </SelectInput>
                             <Error v-if="form_edit.errors['user_detail.province']">{{
                                 form_edit.errors['user_detail.province']
-                                }}
+                            }}
                             </Error>
                         </div>
                         <div class="col-span-2">
@@ -492,7 +490,7 @@ const openUpdateRoleModal = (user) => {
                             </SelectInput>
                             <Error v-if="form_edit.errors['user_detail.barangay']">{{
                                 form_edit.errors['user_detail.barangay']
-                                }}
+                            }}
                             </Error>
                         </div>
                     </div>
@@ -502,7 +500,7 @@ const openUpdateRoleModal = (user) => {
                                 label="ID number" title="id_number"></Input>
                             <Error v-if="form_edit.errors['user_detail.id_number']">{{
                                 form_edit.errors['user_detail.id_number']
-                                }}
+                            }}
                             </Error>
                         </div>
                     </div>

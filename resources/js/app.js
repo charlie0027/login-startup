@@ -26,6 +26,7 @@ import InputCheckbox from '@/Components/InputCheckbox.vue'
 import InputTextarea from '@/Components/InputTextarea.vue'
 import InputToggle from './Components/InputToggle.vue';
 import Tooltip from './Components/Tooltip.vue';
+import Tabs from './Components/Tabs.vue';
 
 const options = {
     // You can set your default options here
@@ -63,6 +64,7 @@ createInertiaApp({
         app.component('InputTextarea', InputTextarea)
         app.component('InputToggle', InputToggle)
         app.component('Tooltip', Tooltip)
+        app.component('Tabs', Tabs)
         app.mount(el)
     },
     progress: {

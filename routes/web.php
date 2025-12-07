@@ -50,8 +50,8 @@ Route::middleware(['auth', 'login.message', 'email.verification.toggle', 'two.fa
     // Libraries/Roles
     Route::get('/libraries/user_roles', [UserRoleController::class, 'index'])->name('libraries.user_role_index');
     Route::post('/libraries/user_roles', [UserRoleController::class, 'store'])->name('libraries.user_role_store');
-    Route::put('/libraries/user_roles/{id}', [UserRoleController::class, 'update'])->name('libraries.user_role_update');
-    Route::put('/libraries/user_roles/{id}', [UserRoleController::class, 'deactivate'])->name('libraries.user_role_deactivate');
+    Route::put('/libraries/user_roles/{id}/update', [UserRoleController::class, 'update'])->name('libraries.user_role_update');
+    Route::put('/libraries/user_roles/{id}/deactivate', [UserRoleController::class, 'deactivate'])->name('libraries.user_role_deactivate');
 
     //Settings/Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

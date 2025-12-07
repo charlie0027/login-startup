@@ -31,9 +31,14 @@ class AppServiceProvider extends ServiceProvider
         Inertia::share([
             'can' => function () {
                 return [
-                    'viewLibraries' => Gate::allows('viewAny', UserDetail::class),
-                    'updateUserDetails' => Gate::allows('updateUserDetails', UserDetail::class),
-                    'updateSettings' => Gate::allows('updateSettings', UserDetail::class)
+                    'view' => Gate::allows('view', UserDetail::class),
+                    'create' => Gate::allows('create', UserDetail::class),
+                    'update' => Gate::allows('update', UserDetail::class),
+                    'delete' => Gate::allows('delete', UserDetail::class),
+                    'export' => Gate::allows('export', UserDetail::class),
+                    'print' => Gate::allows('print', UserDetail::class),
+                    'view_sidenav' => Gate::allows('view_sidenav', UserDetail::class),
+                    'view_tab' => Gate::allows('view_tab', UserDetail::class),
                 ];
             },
         ]);

@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         // Will throw AuthorizationException if denied
-        Gate::authorize('viewAny', UserDetail::class);
+        Gate::authorize('view', UserDetail::class);
         // return User::paginate(10);
         $users = User::with('userDetail')
             ->when(request('searchInput'), function ($query, $searchInput) {
@@ -49,6 +49,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        Gate::authorize('create', UserDetail::class);
         $userCreate =  User::create(array_merge(
             $request->validate([
                 'first_name' => 'required|string|min:3|max:255',
@@ -81,6 +82,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        Gate::authorize('update', UserDetail::class);
         $user = User::with('userDetail')->findOrFail($request->id);
         $user_detail = $user->userDetail;
 
@@ -164,6 +166,7 @@ class UserController extends Controller
 
     public function destroy(Request $request)
     {
+        Gate::authorize('delete', UserDetail::class);
         $user = User::findOrFail($request->id);
         $user->updated_by = Auth::id();
         $user->save();

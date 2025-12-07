@@ -11,27 +11,107 @@ class UserRolePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): Response
+    public function view(User $user): Response
     {
-        $authRoles = Auth::user()->userDetail->roles ?? []; // already an array
-        return array_intersect([1, 4, 5], $authRoles)
-            ? Response::allow('Welcome, admin! You can view all users.')
-            : Response::deny('Only administrators can view this section.');
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('view')
+            ? Response::allow('You can view.')
+            : Response::deny('You cannot view.');
     }
 
-    public function updateUserDetails(User $user): Response
+    public function create(User $user): Response
     {
-        $authRoles = Auth::user()->userDetail->roles ?? []; // already an array
-        return array_intersect([1, 4], $authRoles)
-            ? Response::allow('Welcome, admin! You can view all users.')
-            : Response::deny('Only administrators can view this section.');
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('create')
+            ? Response::allow('You can create.')
+            : Response::deny('You cannot create.');
     }
 
-    public function updateSettings(User $user): Response
+    public function update(User $user): Response
     {
-        $authRoles = Auth::user()->userDetail->roles ?? []; // already an array
-        return array_intersect([1, 4], $authRoles)
-            ? Response::allow('Welcome, admin! You can view all users.')
-            : Response::deny('Only administrators can view this section.');
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('update')
+            ? Response::allow('You can update.')
+            : Response::deny('You cannot update.');
+    }
+
+    public function delete(User $user): Response
+    {
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('delete')
+            ? Response::allow('You can delete.')
+            : Response::deny('You cannot delete.');
+    }
+
+    public function export(User $user): Response
+    {
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('export')
+            ? Response::allow('You can export.')
+            : Response::deny('You cannot export.');
+    }
+
+    public function print(User $user): Response
+    {
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('print')
+            ? Response::allow('You can print.')
+            : Response::deny('You cannot print.');
+    }
+
+    public function view_sidenav(User $user): Response
+    {
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('view_sidenav')
+            ? Response::allow('You can view sidenav.')
+            : Response::deny('You cannot view sidenav.');
+    }
+
+    public function view_tab(User $user): Response
+    {
+        $detail = $user->userDetail;
+
+        // If no detail/roles, treat as default user
+        if (!$detail || empty($detail->roles)) {
+            return Response::deny('Default users cannot view this section.');
+        }
+        return $user->userDetail->hasPermission('view_tab')
+            ? Response::allow('You can view tab.')
+            : Response::deny('You cannot view tab.');
     }
 }

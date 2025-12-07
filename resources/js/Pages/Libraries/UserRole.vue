@@ -12,6 +12,8 @@ const toast = useToast()
 const props = defineProps({
     user_roles: Object,
     filters: Object,
+    filters_permission: Object,
+    permissions: Object,
 })
 
 const form = useForm({
@@ -19,7 +21,7 @@ const form = useForm({
     role_name: '',
     role_code: '',
     description: '',
-    permissions: '',
+    permissions: [],
     is_default: '',
     status: '',
 })
@@ -42,9 +44,28 @@ const columns = [
     { key: 'action', label: 'Actions' }
 ]
 
+// Read/Table - Permissions
+const columns_permission = [
+    { key: 'id', label: 'ID' },
+    { key: 'description', label: 'Description' },
+    { key: 'allowed_roles', label: 'Allowed Roles' },
+    { key: 'name', label: 'Name' },
+    { key: 'action', label: 'Actions' }
+]
+
 // Search
 const searchInput = ref(props.filters)
 watch(searchInput, debounce(value => {
+    router.get('/libraries/user_roles', { searchInput: value }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    })
+}, 300))
+
+// Search Permission
+const searchInputPermission = ref(props.filters)
+watch(searchInputPermission, debounce(value => {
     router.get('/libraries/user_roles', { searchInput: value }, {
         preserveState: true,
         preserveScroll: true,
@@ -61,6 +82,7 @@ const openEditModal = (user_role) => {
     form.description = user_role.description
     form.status = user_role.status
     form.is_default = user_role.is_default
+    form.permissions = user_role.permissions
 
     editRole.value = true
 }
@@ -75,71 +97,149 @@ const openActivDeactivateModal = (user_role) => {
     confirmDeactivate.value = true
 }
 
+// Permissions
+
+// tabs
+const tabs = [
+    { name: 'User Role', key: 'user_role' },
+    { name: 'Permissions', key: 'permissions' }
+]
+
 </script>
 <template>
 
     <Head title="Libraries - User Roles"></Head>
     <MainLayout>
-        <div>
-            <div class="flex justify-between">
-                <h1 class="text-3xl font-bold mb-4">User Roles Library</h1>
-                <!-- Add Button -->
-                <ButtonCom @click="openAddModal"
-                    class="mb-4 border bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2">
-                    <i class="fa fa-plus-circle"></i><span class="hidden md:inline  ml-4">Add New Role</span>
-                </ButtonCom>
-            </div>
-            <div class="mb-4">
-                <!-- Search -->
-                <form action="">
-                    <Input type="text" id="searchText" placeholder="Search for Name or Code here..."
-                        v-model="searchInput"></Input>
-                </form>
-            </div>
+        <Tabs :tabs="tabs">
+            <template #user_role>
+                <div>
+                    <div class="flex justify-between">
+                        <h1 class="text-3xl font-bold mb-4">User Roles Library</h1>
+                        <!-- Add Button -->
+                        <ButtonCom @click="openAddModal"
+                            class="mb-4 border bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2">
+                            <i class="fa fa-plus-circle"></i><span class="hidden md:inline  ml-4">Add New Role</span>
+                        </ButtonCom>
+                    </div>
+                    <div class="mb-4">
+                        <!-- Search -->
+                        <form action="">
+                            <Input type="text" id="searchText" placeholder="Search for Name or Code here..."
+                                v-model="searchInput"></Input>
+                        </form>
+                    </div>
 
-            <!-- <FlashMessage></FlashMessage> -->
-            <Table :columns="columns" :rows="props.user_roles.data">
-                <!-- TR -->
-                <template v-slot:table_tr></template>
-                <!-- TD -->
-                <template v-slot:table_td="{ row, col }">
-                    <template v-if="col.key === 'action'">
-                        <div class="flex space-x-2" v-if="can.updateUserDetails">
-                            <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white" @click="openEditModal(row)">
-                                <i class="fa fa-pencil-square"></i><span class="hidden md:inline">Edit</span>
-                            </ButtonSmall>
-                            <div>
-                                <ButtonSmall v-if="row.status === 1" class="bg-red-500 hover:bg-red-600 text-white"
-                                    @click="openActivDeactivateModal(row)">
-                                    <i class="fa fa-trash"></i><span class="hidden md:inline">Deactivate</span>
-                                </ButtonSmall>
-                                <ButtonSmall v-else class="bg-green-500 hover:bg-green-600 text-white"
-                                    @click="openActivDeactivateModal(row)">
-                                    <i class="fa fa-toggle-on"></i><span class="hidden md:inline">Activate</span>
-                                </ButtonSmall>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-if="col.key === 'status'">
-                        <span v-if="row.status === 1"
-                            class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 inset-ring inset-ring-green-600/20">
-                            Active</span>
-                        <span v-else
-                            class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 inset-ring inset-ring-red-600/10">
-                            Inactive</span>
-                    </template>
-                    <template v-if="col.key === 'is_default'">
-                        <span v-if="row.is_default === 1"
-                            class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 inset-ring inset-ring-green-600/20">
-                            Yes</span>
-                        <span v-else
-                            class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 inset-ring inset-ring-red-600/10">
-                            No</span>
-                    </template>
-                </template>
-            </Table>
-            <Paginator :rows="props.user_roles.links"></Paginator>
-        </div>
+                    <!-- <FlashMessage></FlashMessage> -->
+                    <Table :columns="columns" :rows="props.user_roles.data">
+                        <!-- TR -->
+                        <template v-slot:table_tr></template>
+                        <!-- TD -->
+                        <template v-slot:table_td="{ row, col }">
+                            <template v-if="col.key === 'action'">
+                                <div class="flex space-x-2">
+                                    <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white"
+                                        @click="openEditModal(row)">
+                                        <i class="fa fa-pencil-square"></i><span class="hidden md:inline">Edit</span>
+                                    </ButtonSmall>
+                                    <div>
+                                        <ButtonSmall v-if="row.status === 1"
+                                            class="bg-red-500 hover:bg-red-600 text-white"
+                                            @click="openActivDeactivateModal(row)">
+                                            <i class="fa fa-trash"></i><span class="hidden md:inline">Deactivate</span>
+                                        </ButtonSmall>
+                                        <ButtonSmall v-else class="bg-green-500 hover:bg-green-600 text-white"
+                                            @click="openActivDeactivateModal(row)">
+                                            <i class="fa fa-toggle-on"></i><span
+                                                class="hidden md:inline">Activate</span>
+                                        </ButtonSmall>
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-if="col.key === 'status'">
+                                <span v-if="row.status === 1"
+                                    class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 inset-ring inset-ring-green-600/20">
+                                    Active</span>
+                                <span v-else
+                                    class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 inset-ring inset-ring-red-600/10">
+                                    Inactive</span>
+                            </template>
+                            <template v-if="col.key === 'is_default'">
+                                <span v-if="row.is_default === 1"
+                                    class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 inset-ring inset-ring-green-600/20">
+                                    Yes</span>
+                                <span v-else
+                                    class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 inset-ring inset-ring-red-600/10">
+                                    No</span>
+                            </template>
+                            <template v-if="col.key === 'permissions'">
+                                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-300">
+                                    <li v-for="perm in row.permissions" :key="perm">
+                                        <!-- Find the permission object that matches this perm -->
+                                        {{
+                                            props.permissions.data.find(p => p.name === perm)?.description
+                                            || props.permissions.data.find(p => p.name === perm)?.name
+                                            || perm
+                                        }}
+                                    </li>
+                                </ul>
+                            </template>
+                        </template>
+                    </Table>
+                    <Paginator :rows="props.user_roles.links"></Paginator>
+                </div>
+            </template>
+
+            <template #permissions>
+                <div>
+                    <div class="flex justify-between">
+                        <h1 class="text-3xl font-bold mb-4">Permissions Library</h1>
+                        <!-- Add Button -->
+                        <ButtonCom @click="openAddModal"
+                            class="mb-4 border bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2">
+                            <i class="fa fa-plus-circle"></i><span class="hidden md:inline  ml-4">Add New Role</span>
+                        </ButtonCom>
+                    </div>
+                    <div class="mb-4">
+                        <!-- Search -->
+                        <form action="">
+                            <Input type="text" id="searchText" placeholder="Search for Name or Description here..."
+                                v-model="searchInputPermission"></Input>
+                        </form>
+                    </div>
+
+                    <!-- <FlashMessage></FlashMessage> -->
+                    <Table :columns="columns_permission" :rows="props.permissions.data">
+                        <!-- TR -->
+                        <template v-slot:table_tr></template>
+                        <!-- TD -->
+                        <template v-slot:table_td="{ row, col }">
+                            <template v-if="col.key === 'action'">
+                                <div class="flex space-x-2" v-if="can.updateUserDetails">
+                                    <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white"
+                                        @click="openEditModal(row)">
+                                        <i class="fa fa-pencil-square"></i><span class="hidden md:inline">Edit</span>
+                                    </ButtonSmall>
+                                    <div>
+                                        <ButtonSmall v-if="row.status === 1"
+                                            class="bg-red-500 hover:bg-red-600 text-white"
+                                            @click="openActivDeactivateModal(row)">
+                                            <i class="fa fa-trash"></i><span class="hidden md:inline">Deactivate</span>
+                                        </ButtonSmall>
+                                        <ButtonSmall v-else class="bg-green-500 hover:bg-green-600 text-white"
+                                            @click="openActivDeactivateModal(row)">
+                                            <i class="fa fa-toggle-on"></i><span
+                                                class="hidden md:inline">Activate</span>
+                                        </ButtonSmall>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+                    </Table>
+                    <Paginator :rows="props.permissions.links"></Paginator>
+                </div>
+            </template>
+        </Tabs>
+
     </MainLayout>
 
     <!-- Add Modal -->
@@ -171,9 +271,24 @@ const openActivDeactivateModal = (user_role) => {
                         <Error v-if="form.errors.role_code">{{ form.errors.role_code }}</Error>
                     </div>
                 </div>
-                <div>
+                <div class="mb-4">
                     <InputTextarea id="description" v-model="form.description" label="Description"></InputTextarea>
                     <Error v-if="form.errors.description">{{ form.errors.description }}</Error>
+                </div>
+                <div class="mb-4">
+                    <label class="text-sm font-bold text-gray-700 dark:text-white uppercase">
+                        Permissions
+                    </label>
+                    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-2">
+                        <div v-for="permission in props.permissions.data" :key="permission.id"
+                            class="flex items-center space-x-2">
+
+                            <InputCheckbox type="checkbox" :label="permission.description"
+                                :id="`permission-${permission.id}`" v-model="form.permissions" :value="permission.name">
+                            </InputCheckbox>
+                        </div>
+                    </div>
+                    <Error v-if="form.errors.permissions">{{ form.errors.permissions }}</Error>
                 </div>
                 <div class="pb-4 pt-8 justify-end flex space-x-4 items-center">
                     <ButtonCom type="submit" class="bg-blue-500 text-white w-[30%] px-4 py-2 ">Add Role</ButtonCom>
@@ -186,7 +301,7 @@ const openActivDeactivateModal = (user_role) => {
     <Modal v-model="editRole">
         <template #modal_header>Edit Role</template>
         <template #modal_body>
-            <form @submit.prevent="form.put('/libraries/user_roles/' + form.id, {
+            <form @submit.prevent="form.put('/libraries/user_roles/' + form.id + '/update', {
                 onSuccess: () => {
                     if ($page.props.flash.success) {
                         toast.success($page.props.flash.success, { icon: 'fas fa-check-circle' })
@@ -236,7 +351,21 @@ const openActivDeactivateModal = (user_role) => {
                         </SelectInput>
                         <Error v-if="form.errors.is_default">{{ form.errors.is_default }}</Error>
                     </div>
+                </div>
+                <div class="mb-4">
+                    <label class="text-sm font-bold text-gray-700 dark:text-white uppercase">
+                        Permissions
+                    </label>
+                    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-2">
+                        <div v-for="permission in props.permissions.data" :key="permission.id"
+                            class="flex items-center space-x-2">
 
+                            <InputCheckbox type="checkbox" :label="permission.description"
+                                :id="`permission-${permission.id}`" v-model="form.permissions" :value="permission.name">
+                            </InputCheckbox>
+                        </div>
+                    </div>
+                    <Error v-if="form.errors.permissions">{{ form.errors.permissions }}</Error>
                 </div>
                 <div class="pb-4 pt-8 justify-end flex space-x-4 items-center">
                     <ButtonCom type="submit" class="bg-blue-500 text-white w-[30%] px-4 py-2 ">Update Role</ButtonCom>
@@ -253,7 +382,7 @@ const openActivDeactivateModal = (user_role) => {
         <template #modal_body>
             <span>Name: {{ form.role_name }} [ {{ form.role_code }}]</span>
             <div class="flex justify-end items-center space-x-4 mb-4">
-                <form @submit.prevent="form.put('/libraries/user_roles/' + form.id, {
+                <form @submit.prevent="form.put('/libraries/user_roles/' + form.id + '/deactivate', {
                     onSuccess: () => {
                         if ($page.props.flash.success) {
                             toast.success($page.props.flash.success, { icon: 'fas fa-check-circle' })
