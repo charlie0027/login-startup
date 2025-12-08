@@ -64,9 +64,9 @@ watch(searchInput, debounce(value => {
 }, 300))
 
 // Search Permission
-const searchInputPermission = ref(props.filters)
+const searchInputPermission = ref(props.filters_permission)
 watch(searchInputPermission, debounce(value => {
-    router.get('/libraries/user_roles', { searchInput: value }, {
+    router.get('/libraries/user_roles', { searchInputPermission: value }, {
         preserveState: true,
         preserveScroll: true,
         replace: true

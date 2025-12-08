@@ -21,13 +21,13 @@ const message = page.props.flash?.message
 <template>
 
     <Head title="HRMIS"></Head>
-    <Guest class="lg:w-[30%] md:w-[50%] sm:w-[70%]">
-        <div class="grid grid-cols-3 justify-center items-center pb-4">
-            <div class="col-span-2">
-                <h2 class="font-bold text-7xl text-center">HRMIS</h2>
+    <Guest class="w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3">
+        <div class="md:grid md:grid-cols-3 items-center mb-8">
+            <div class=" flex items-center justify-center md:justify-end p-4">
+                <img src="../../../public/img/sample_logo.png" alt="image_logo" class="w-24">
             </div>
-            <div class="w-32 h-32">
-                <img src="../../../public/img/sample_logo.png" alt="">
+            <div class="col-span-2 flex justify-center md:justify-start">
+                <h2 class="font-bold text-5xl md:text-7xl text-center">HRMIS</h2>
             </div>
         </div>
 

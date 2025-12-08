@@ -25,8 +25,8 @@ import SelectInput from '@/Components/SelectInput.vue'
 import InputCheckbox from '@/Components/InputCheckbox.vue'
 import InputTextarea from '@/Components/InputTextarea.vue'
 import InputToggle from './Components/InputToggle.vue';
-import Tooltip from './Components/Tooltip.vue';
-import Tabs from './Components/Tabs.vue';
+import Tooltip from '@/Components/Tooltip.vue';
+import Tabs from '@/Components/Tabs.vue';
 
 const options = {
     // You can set your default options here

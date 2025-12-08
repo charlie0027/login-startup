@@ -16,7 +16,7 @@ function goToProfile() {
 
 <template>
     <header
-        class="bg-linear-to-r from-cyan-300 to-blue-500 transition-all dark:from-gray-800 dark:to-gray-800 dark:text-white  shadow px-4 py-3 flex justify-between items-center border-b-2 border-blue-900 dark:border-white">
+        class="bg-linear-to-r from-cyan-300 to-blue-500 transition-all dark:from-gray-800 dark:to-gray-800 dark:text-white  shadow px-4 py-3 flex justify-between items-center border-b-2 border-blue-900 dark:border-white min-w-xs md:max-w-full m-0">
         <h1 class="text-lg font-semibold dark:text-white">My App</h1>
         <div class="flex space-x-4 items-center">
             <button @click="toggleTheme" class="text-yellow-500  cursor-pointer text-2xl font-extrabold">
@@ -44,7 +44,7 @@ function goToProfile() {
                         <li>
                             <Link method="post" href="/logout"
                                 class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                            Logout
+                                Logout
                             </Link>
                         </li>
                     </ul>
