@@ -108,10 +108,12 @@ const tabs = [
 </script>
 <template>
 
-    <Head title="Libraries - User Roles"></Head>
+
     <MainLayout>
         <Tabs :tabs="tabs">
             <template #user_role>
+
+                <Head title="Libraries - User Roles"></Head>
                 <div>
                     <div class="flex justify-between">
                         <h1 class="text-3xl font-bold mb-4">User Roles Library</h1>
@@ -190,6 +192,8 @@ const tabs = [
             </template>
 
             <template #permissions>
+
+                <Head title="Libraries - Permissions"></Head>
                 <div>
                     <div class="flex justify-between">
                         <h1 class="text-3xl font-bold mb-4">Permissions Library</h1>
@@ -214,7 +218,7 @@ const tabs = [
                         <!-- TD -->
                         <template v-slot:table_td="{ row, col }">
                             <template v-if="col.key === 'action'">
-                                <div class="flex space-x-2" v-if="can.updateUserDetails">
+                                <div class="flex space-x-2">
                                     <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white"
                                         @click="openEditModal(row)">
                                         <i class="fa fa-pencil-square"></i><span class="hidden md:inline">Edit</span>

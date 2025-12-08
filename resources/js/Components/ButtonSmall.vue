@@ -11,7 +11,7 @@ const props = defineProps({
     },
 });
 
-const defaultClass = 'border rounded-lg cursor-pointer transition-all dark:border dark:border-white text-[12px] border dark:text-white font-bold py-1 px-2';
+const defaultClass = 'border border-white rounded-lg cursor-pointer transition-all dark:border text-[12px] border dark:text-white font-semibold py-1 px-2';
 const combinedClass = `${props.class} ${defaultClass} `.trim();
 
 </script>

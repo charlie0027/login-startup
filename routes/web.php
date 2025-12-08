@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Archives\ArchiveController;
 use App\Http\Controllers\Archives\AuditTrailController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -61,6 +62,10 @@ Route::middleware(['auth', 'login.message', 'email.verification.toggle', 'two.fa
 
     //Archives/Audit Trails
     Route::get('/archives/audit_trails', [AuditTrailController::class, 'index'])->name('archives.audit_trails.index');
+
+    // Archives/Archives
+    Route::get('/archives/archives', [ArchiveController::class, 'index'])->name('archives.archives.index');
+    Route::put('/archives/archives', [ArchiveController::class, 'restore'])->name('archives.archives.restore');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('login.message');
