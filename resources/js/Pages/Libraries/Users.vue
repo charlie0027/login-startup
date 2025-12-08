@@ -201,7 +201,7 @@ const openUpdateRoleModal = (user) => {
         <div>
             <div class="flex justify-between">
                 <h1 class="text-3xl font-bold mb-4">Users Library</h1>
-                <ButtonCom v-if="can.updateUserDetails" @click="addUser = true"
+                <ButtonCom v-if="can.create" @click="addUser = true"
                     class="mb-4 border bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2">
                     <i class="fa fa-plus-circle"></i><span class="hidden md:inline  ml-4">Add New User</span>
                 </ButtonCom>

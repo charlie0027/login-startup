@@ -48,9 +48,9 @@ const columns = [
 const columns_permission = [
     { key: 'id', label: 'ID' },
     { key: 'description', label: 'Description' },
-    { key: 'allowed_roles', label: 'Allowed Roles' },
+    // { key: 'allowed_roles', label: 'Allowed Roles' },
     { key: 'name', label: 'Name' },
-    { key: 'action', label: 'Actions' }
+    // { key: 'action', label: 'Actions' }
 ]
 
 // Search
@@ -194,10 +194,10 @@ const tabs = [
                     <div class="flex justify-between">
                         <h1 class="text-3xl font-bold mb-4">Permissions Library</h1>
                         <!-- Add Button -->
-                        <ButtonCom @click="openAddModal"
+                        <!-- <ButtonCom @click="openAddModal"
                             class="mb-4 border bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2">
                             <i class="fa fa-plus-circle"></i><span class="hidden md:inline  ml-4">Add New Role</span>
-                        </ButtonCom>
+                        </ButtonCom> -->
                     </div>
                     <div class="mb-4">
                         <!-- Search -->

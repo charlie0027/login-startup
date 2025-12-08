@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Archives\AuditTrailController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegistrationController;
@@ -57,6 +58,9 @@ Route::middleware(['auth', 'login.message', 'email.verification.toggle', 'two.fa
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/email-verification', [SettingController::class, 'updateEmailVerification'])->name('settings.updateEmailVerification');
     Route::post('/settings/two-factor-auth', [SettingController::class, 'updateTwoFactorAuth'])->name('settings.updateTwoFactorAuth');
+
+    //Archives/Audit Trails
+    Route::get('/archives/audit_trails', [AuditTrailController::class, 'index'])->name('archives.audit_trails.index');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('login.message');

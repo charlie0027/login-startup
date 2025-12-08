@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
+use App\Models\Archives\AuditTrail;
 use App\Models\Libraries\UserRole;
 use App\Models\UserDetail;
 use App\Models\RefBarangay;
@@ -20,7 +21,7 @@ class UserController extends Controller
     {
         // Will throw AuthorizationException if denied
         Gate::authorize('view', UserDetail::class);
-        // return User::paginate(10);
+
         $users = User::with('userDetail')
             ->when(request('searchInput'), function ($query, $searchInput) {
                 $query->where('username', 'like', '%' . $searchInput . '%')
@@ -141,8 +142,18 @@ class UserController extends Controller
 
         // Check if anything changed
         if ($user_detail->wasRecentlyCreated) {
+
             $user->updated_by = Auth::id();
             $user->save();
+
+            // Audit trail for creation
+            AuditTrail::insertAuditTrail(
+                'create',
+                'User with details',
+                $user_detail->id,
+                [], // no "from" values
+                $user_detail->getAttributes()
+            );
 
             return redirect()->back()->with([
                 'success' => 'User updated successfully.',
@@ -152,6 +163,10 @@ class UserController extends Controller
                 'error' => 'No changes were made to the user.'
             ]);
         } else {
+
+            AuditTrail::insertAuditTrail('update', 'User with details', $user_detail->id, $user_detail, $user_detail);
+
+            // Save parent first
             $user->updated_by = Auth::id();
             $user->save();
 
