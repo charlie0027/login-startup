@@ -13,4 +13,9 @@ class Permission extends Model
     use HasFactory, Notifiable;
 
     protected $guarded = [];
+
+    public function roles()
+    {
+        return $this->belongsToMany(UserRole::class, 'permission_role');
+    }
 }

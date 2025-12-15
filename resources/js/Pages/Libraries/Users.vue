@@ -12,7 +12,7 @@ const can = page.props.can || {}
 
 const props = defineProps({
     users: Object,
-    filters: Object,
+    filters: String,
     citymuns: Array,
     provinces: Array,
     roles: Object
@@ -22,7 +22,7 @@ const toast = useToast()
 
 const columns = [
     { key: 'id', label: 'ID' },
-    { key: 'name', label: 'Name' },
+    { key: 'last_name', label: 'Name' },
     { key: 'username', label: 'Username' },
     { key: 'email', label: 'Email' },
     { key: 'action', label: 'Action' }
@@ -189,7 +189,7 @@ const form_update_role = useForm({
 const openUpdateRoleModal = (user) => {
     form_update_role.id = user.id
     form_update_role.username = user.username
-    form_update_role.roles = user.user_detail?.roles ?? []
+    form_update_role.roles = user.user_detail?.roles.map(r => r.id) ?? []
     updateRole.value = true
 }
 
@@ -213,7 +213,7 @@ const openUpdateRoleModal = (user) => {
             </div>
 
             <!-- <FlashMessage></FlashMessage> -->
-            <Table :columns="columns" :rows="props.users.data">
+            <Table :columns="columns" :rows="props.users.data" :total="props.users.total">
                 <!-- TR -->
                 <template v-slot:table_tr></template>
                 <!-- TD -->
@@ -236,7 +236,7 @@ const openUpdateRoleModal = (user) => {
                             </ButtonSmall>
                         </div>
                     </template>
-                    <template v-if="col.key === 'name'">
+                    <template v-if="col.key === 'last_name'">
                         <strong class="uppercase">{{ row.last_name }}, {{ row.first_name }} {{ row.middle_name }}
                             {{ row.name_extension }}</strong>
                     </template>
@@ -645,7 +645,7 @@ const openUpdateRoleModal = (user) => {
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-60 overflow-y-auto border p-2 rounded-md">
                         <div v-for="role in roles" :key="role.id" class="p-2">
                             <InputCheckbox type="checkbox" :label="role.role_name" :id="`role-${role.id}`"
-                                v-model="form_update_role.roles" :value="Number(role.id)">
+                                v-model="form_update_role.roles" :value="role.id">
                             </InputCheckbox>
                         </div>
                     </div>

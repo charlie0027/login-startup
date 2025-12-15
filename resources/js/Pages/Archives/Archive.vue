@@ -45,7 +45,7 @@ const restore_user = (deleted_user) => {
                 <div>
                     <h1 class="text-3xl font-bold mb-4">Removed Users</h1>
                 </div>
-                <Table :columns="col_table" :rows="props.deleted_users.data">
+                <Table :columns="col_table" :rows="props.deleted_users.data" :total="props.deleted_users.total">
                     <template #table_td="{ row, col }">
                         <template v-if="col.key === 'name'">
                             {{ row.last_name }}, {{ row.first_name }} {{ row.middle_name }} {{ row.extension_name }}

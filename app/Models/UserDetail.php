@@ -14,9 +14,9 @@ class UserDetail extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'roles' => 'array'
-    ];
+    // protected $casts = [
+    //     'roles' => 'array'
+    // ];
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -27,37 +27,28 @@ class UserDetail extends Model
         return $this->belongsTo(UserRole::class);
     }
 
-    // Fetch roles by IDs stored in user_details.roles
-    public function rolesModels()
+    public function roles()
     {
-        return UserRole::whereIn('id', $this->roles ?? [])->get();
+        return $this->belongsToMany(UserRole::class, 'user_detail_role');
     }
 
-    // Union of permissions from all assigned roles
-    public function effectivePermissions(): array
+    public function permissions()
     {
-        $permissions = [];
-        foreach ($this->rolesModels() as $role) {
-            $rolePerms = is_array($role->permissions)
-                ? $role->permissions
-                : json_decode($role->permissions ?? '[]', true);
+        $array = $this->roles()->with('permissions')->get()
+            ->pluck('permissions')
+            ->flatten()
+            ->pluck('name') // or whatever column holds the permission slug
+            ->unique()
+            ->values();
 
-            if (is_array($rolePerms)) {
-                $permissions = array_merge($permissions, $rolePerms);
-            }
-        }
-        return array_values(array_unique($permissions));
+        // dd($array);
+        return $array;
     }
 
-    // Optional convenience method
+    // Convenience method
     public function hasPermission(string $permission): bool
     {
-        return in_array($permission, $this->effectivePermissions(), true);
-    }
-
-    // For ability:resource style (e.g., view:user_roles)
-    public function hasAbility(string $ability, string $resource): bool
-    {
-        return $this->hasPermission("$ability:$resource");
+        // dd($permission);
+        return $this->permissions()->contains($permission);
     }
 }

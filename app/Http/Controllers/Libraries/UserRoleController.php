@@ -19,7 +19,7 @@ class UserRoleController extends Controller
         // Will throw AuthorizationException if denied
         Gate::authorize('view', UserDetail::class);
 
-        $userRole = UserRole::query()
+        $userRole = UserRole::with('permissions')
             ->when(request('searchInput'), function ($query, $searchInput) {
                 $query->where('role_name', 'like', '%' . $searchInput . '%')
                     ->orWhere('role_code', 'like', '%' . $searchInput . '%');

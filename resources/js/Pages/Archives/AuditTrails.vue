@@ -37,7 +37,7 @@ const columns = [
             </div> -->
 
             <!-- <FlashMessage></FlashMessage> -->
-            <Table :columns="columns" :rows="props.audit_trails.data">
+            <Table :columns="columns" :rows="props.audit_trails.data" :total="props.audit_trails.total">
                 <!-- TR -->
                 <template v-slot:table_tr></template>
                 <!-- TD -->

@@ -94,6 +94,18 @@ aside {
 
                 </Link>
             </div>
+            <div v-if="can.view_sidenav">
+                <h2 class="text-2xl font-bold uppercase hidden md:inline"
+                    :class="{ 'text-blue-600 dark:text-blue-300': $page.url.startsWith('/reports') }">Reports</h2>
+
+                <Link href="/reports/user_reports"
+                    class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                    :class="{ 'font-bold underline underline-offset-4 text-blue-600 dark:text-blue-300': $page.url.startsWith('/reports/user_reports') }"
+                    view-transition preserve-scroll>
+                    <div class="flex items-center gap-2"> <i class="fas fa-file-text"></i> <span
+                            class="hidden md:inline">User Summary</span> </div>
+                </Link>
+            </div>
         </nav>
     </aside>
 </template>

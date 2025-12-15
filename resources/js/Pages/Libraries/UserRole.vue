@@ -11,8 +11,8 @@ const can = page.props.can || {}
 const toast = useToast()
 const props = defineProps({
     user_roles: Object,
-    filters: Object,
-    filters_permission: Object,
+    filters: String,
+    filters_permission: String,
     permissions: Object,
 })
 
@@ -132,7 +132,7 @@ const tabs = [
                     </div>
 
                     <!-- <FlashMessage></FlashMessage> -->
-                    <Table :columns="columns" :rows="props.user_roles.data">
+                    <Table :columns="columns" :rows="props.user_roles.data" :total="props.user_roles.total">
                         <!-- TR -->
                         <template v-slot:table_tr></template>
                         <!-- TD -->
@@ -176,12 +176,7 @@ const tabs = [
                             <template v-if="col.key === 'permissions'">
                                 <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-300">
                                     <li v-for="perm in row.permissions" :key="perm">
-                                        <!-- Find the permission object that matches this perm -->
-                                        {{
-                                            props.permissions.data.find(p => p.name === perm)?.description
-                                            || props.permissions.data.find(p => p.name === perm)?.name
-                                            || perm
-                                        }}
+                                        {{ perm.name || 'Permissions Not Set' }}
                                     </li>
                                 </ul>
                             </template>
@@ -212,7 +207,8 @@ const tabs = [
                     </div>
 
                     <!-- <FlashMessage></FlashMessage> -->
-                    <Table :columns="columns_permission" :rows="props.permissions.data">
+                    <Table :columns="columns_permission" :rows="props.permissions.data"
+                        :total="props.permissions.total">
                         <!-- TR -->
                         <template v-slot:table_tr></template>
                         <!-- TD -->

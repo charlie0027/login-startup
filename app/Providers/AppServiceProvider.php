@@ -30,15 +30,17 @@ class AppServiceProvider extends ServiceProvider
         // Share authorization state with all Inertia pages
         Inertia::share([
             'can' => function () {
+                $user = Auth::user();
+                $detail = $user?->userDetail;
                 return [
-                    'view' => Gate::allows('view', UserDetail::class),
-                    'create' => Gate::allows('create', UserDetail::class),
-                    'update' => Gate::allows('update', UserDetail::class),
-                    'delete' => Gate::allows('delete', UserDetail::class),
-                    'export' => Gate::allows('export', UserDetail::class),
-                    'print' => Gate::allows('print', UserDetail::class),
-                    'view_sidenav' => Gate::allows('view_sidenav', UserDetail::class),
-                    'view_tab' => Gate::allows('view_tab', UserDetail::class),
+                    'view' => Gate::allows('view', $detail),
+                    'create' => Gate::allows('create', $detail),
+                    'update' => Gate::allows('update', $detail),
+                    'delete' => Gate::allows('delete', $detail),
+                    'export' => Gate::allows('export', $detail),
+                    'print' => Gate::allows('print', $detail),
+                    'view_sidenav' => Gate::allows('view_sidenav', $detail),
+                    'view_tab' => Gate::allows('view_tab', $detail),
                 ];
             },
         ]);

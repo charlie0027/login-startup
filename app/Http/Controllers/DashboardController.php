@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Libraries\UserRole;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
@@ -24,12 +25,18 @@ class DashboardController extends Controller
             ->groupBy('gender')
             ->get();
 
-        $role_total = DB::table('user_details')
-            ->join(DB::raw("JSON_TABLE(user_details.roles, '$[*]' COLUMNS(role_id INT PATH '$')) as roles"), function ($join) {})
-            ->join('user_roles', 'user_roles.id', '=', 'roles.role_id')
-            ->select('user_roles.role_name as role_label', DB::raw('COUNT(*) as total'))
-            ->groupBy('user_roles.role_name')
-            ->get();
+        $role_total = UserRole::withCount('userDetails')
+            ->get()
+            ->reject(function ($role) {
+                return $role->user_details_count === 0;
+            })
+            ->map(function ($role) {
+                return [
+                    'role_label' => $role->role_name,
+                    'total' => $role->user_details_count,
+                ];
+            })
+            ->values();
 
         return Inertia::render('Dashboard/Dashboard', [
             'gender_total' => $gender_total,

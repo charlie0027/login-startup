@@ -22,7 +22,7 @@ class UserController extends Controller
         // Will throw AuthorizationException if denied
         Gate::authorize('view', UserDetail::class);
 
-        $users = User::with('userDetail')
+        $users = User::with('userDetail.roles')
             ->when(request('searchInput'), function ($query, $searchInput) {
                 $query->where('username', 'like', '%' . $searchInput . '%')
                     ->orWhere('first_name', 'like', '%' . $searchInput . '%')
@@ -32,7 +32,6 @@ class UserController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        // $barangays = RefBarangay::orderBy('brgyDesc')->get();
         $citymuns = RefCity::orderBy('citymunDesc')->get();
         $provinces = RefProvince::orderBy('provDesc')->get();
         $roles = UserRole::where('status', 1)->get();
@@ -220,27 +219,27 @@ class UserController extends Controller
 
     public function update_roles(Request $request)
     {
-        // dd($request->all());
-        $user_detail = UserDetail::where('user_id', $request->id)->first();
+        $user_detail = UserDetail::firstOrCreate(
+            ['user_id' => $request->id],
+            [
+                'created_by' => Auth::id(),
+                'id_number'  => Helper::generateUniqueUserId(),
+            ]
+        );
 
-        if (!$user_detail) {
-            // Either create a new record or return an error
-            $user_detail = new UserDetail();
-            $user_detail->user_id = $request->id;
-            $user_detail->created_by = Auth::id();
-            $user_detail->id_number = Helper::generateUniqueUserId();
-        }
+        $roles = $request->roles ?? [];
 
-        $roles = $request->roles ? $request->roles : null;
+        // Get current role IDs (qualified column name)
+        $currentRoles = $user_detail->roles()->pluck('user_roles.id')->toArray();
 
-        $user_detail->fill([
-            // 'roles' => $roles,
-            'roles' => $roles,
-            'updated_by' => Auth::id(),
-        ]);
+        // Compare arrays
+        $hasChanges = collect($roles)->sort()->values()->toArray() !== collect($currentRoles)->sort()->values()->toArray();
 
-        if ($user_detail->isDirty()) {
+        if ($hasChanges) {
+            $user_detail->roles()->sync($roles);
+            $user_detail->updated_by = Auth::id();
             $user_detail->save();
+
             return redirect()->back()->with([
                 'success' => 'Roles updated successfully.',
             ]);

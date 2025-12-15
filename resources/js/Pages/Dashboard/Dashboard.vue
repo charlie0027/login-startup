@@ -31,10 +31,13 @@ const today = moment().format('ddd');
 
 let timer = null
 
+const genderChartRef = ref(null)
+
 onMounted(() => {
     timer = setInterval(() => {
         time_now.value = moment().format('LTS')
     }, 1000)
+
 })
 
 onUnmounted(() => {
@@ -51,6 +54,7 @@ const grandTotal = data.reduce((sum, val) => sum + val, 0);
 const barLabels = props.role_total.map(item => item.role_label);
 const barData = props.role_total.map(item => item.total);
 const barGrandTotal = barData.reduce((sum, val) => sum + val, 0);
+
 
 </script>
 <template>
@@ -118,8 +122,9 @@ const barGrandTotal = barData.reduce((sum, val) => sum + val, 0);
                             },
                             color: textColor
                         },
+
                     },
-                }" class="min-w-full px-4 pb-10" />
+                }" class="min-w-full px-4 pb-10" ref="genderChartRef" />
             </div>
 
             <!-- Bar Chart -->

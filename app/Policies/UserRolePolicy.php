@@ -15,11 +15,11 @@ class UserRolePolicy
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('view')
+
+        return $detail->hasPermission('view')
             ? Response::allow('You can view.')
             : Response::deny('You cannot view.');
     }
@@ -28,11 +28,11 @@ class UserRolePolicy
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('create')
+
+        return $detail->hasPermission('create')
             ? Response::allow('You can create.')
             : Response::deny('You cannot create.');
     }
@@ -41,11 +41,11 @@ class UserRolePolicy
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('update')
+
+        return $detail->hasPermission('update')
             ? Response::allow('You can update.')
             : Response::deny('You cannot update.');
     }
@@ -54,11 +54,11 @@ class UserRolePolicy
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('delete')
+
+        return $detail->hasPermission('delete')
             ? Response::allow('You can delete.')
             : Response::deny('You cannot delete.');
     }
@@ -67,11 +67,11 @@ class UserRolePolicy
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('export')
+
+        return $detail->hasPermission('export')
             ? Response::allow('You can export.')
             : Response::deny('You cannot export.');
     }
@@ -80,11 +80,11 @@ class UserRolePolicy
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('print')
+
+        return $detail->hasPermission('print')
             ? Response::allow('You can print.')
             : Response::deny('You cannot print.');
     }
@@ -93,25 +93,25 @@ class UserRolePolicy
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('view_sidenav')
-            ? Response::allow('You can view sidenav.')
-            : Response::deny('You cannot view sidenav.');
+
+        return $detail->hasPermission('view_sidenav')
+            ? Response::allow('You can view.')
+            : Response::deny('You cannot view.');
     }
 
     public function view_tab(User $user): Response
     {
         $detail = $user->userDetail;
 
-        // If no detail/roles, treat as default user
-        if (!$detail || empty($detail->roles)) {
+        if (!$detail || $detail->roles->isEmpty()) {
             return Response::deny('Default users cannot view this section.');
         }
-        return $user->userDetail->hasPermission('view_tab')
-            ? Response::allow('You can view tab.')
-            : Response::deny('You cannot view tab.');
+
+        return $detail->hasPermission('view_tab')
+            ? Response::allow('You can view.')
+            : Response::deny('You cannot view.');
     }
 }

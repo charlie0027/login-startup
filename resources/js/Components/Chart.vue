@@ -45,10 +45,10 @@ const props = defineProps({
         type: Object,
         default: () => ({})
     },
-    id: {
-        type: String,
-        default: 'universal-chart'
-    },
+    // id: {
+    //     type: String,
+    //     default: 'universal-chart'
+    // },
     class: {
         type: String,
         default: ''
@@ -70,7 +70,7 @@ const ChartComponent = chartMap[props.type] || Pie;
 
 <template>
     <div class="w-full max-w-full overflow-x-auto p-4">
-        <ChartComponent :id="id" :data="chartData" :options="{
+        <ChartComponent v-bind="$attrs" :data="chartData" :options="{
             responsive: true,
             maintainAspectRatio: false,
             plugins: {

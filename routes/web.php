@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\TwoFactorAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Reports\UserReportController;
 use App\Http\Controllers\Setting\SettingController;
 use Illuminate\Support\Facades\Route;
 // use Illuminate\Http\Request;
@@ -66,6 +67,12 @@ Route::middleware(['auth', 'login.message', 'email.verification.toggle', 'two.fa
     // Archives/Archives
     Route::get('/archives/archives', [ArchiveController::class, 'index'])->name('archives.archives.index');
     Route::put('/archives/archives', [ArchiveController::class, 'restore'])->name('archives.archives.restore');
+
+    // Reports/UserSummary
+    Route::get('/reports/user_reports', [UserReportController::class, 'index'])->name('reports.user_reports.index');
+    Route::get('/reports/export_user_summary_excel', [UserReportController::class, 'export_user_summary'])->name('reports.export_user_summary');
+    Route::get('/reports/export_user_summary_pdf', [UserReportController::class, 'export_user_summary_pdf'])->name('reports.export_user_summary_pdf');
+    Route::get('/reports/export_user_summary_word', [UserReportController::class, 'export_user_summary_word'])->name('reports.export_user_summary_word');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('login.message');
