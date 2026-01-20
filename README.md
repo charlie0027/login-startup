@@ -73,6 +73,16 @@ php artisan serve
 npm run dev
 ```
 
+### 8. Super Admin already seeded for testing
+### Username
+```bash
+superadmin
+```
+### Password
+```bash
+admin123
+```
+
 
 
 
