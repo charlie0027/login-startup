@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/laravel/art/master/laravel-logo.png" alt="Laravel Logo" width="120"/>
   <img src="https://vuejs.org/images/logo.png" alt="Vue Logo" width="100"/>
-  <img src="https://raw.githubusercontent.com/innocenzi/awesome-inertiajs/main/assets/logo.svg" alt="Inertia Logo" width="80"/>
+  <img src="https://raw.githubusercontent.com/innocenzi/awesome-inertiajs/main/assets/logo.svg" alt="Inertia Logo" width="100"/>
 </p>
 
 ---
