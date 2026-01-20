@@ -1,10 +1,10 @@
 # 🚀 Laravel + Vue + Inertia
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/laravel/art/master/laravel-logo.png" alt="Laravel Logo" width="110"/>
-  &nbsp &nbsp
+  <img src="https://raw.githubusercontent.com/laravel/art/master/laravel-logo.png" alt="Laravel Logo" width="100"/>
+  &nbsp &nbsp &nbsp
   <img src="https://vuejs.org/images/logo.png" alt="Vue Logo" width="100"/>
-  &nbsp &nbsp
+  &nbsp &nbsp &nbsp
   <img src="https://raw.githubusercontent.com/innocenzi/awesome-inertiajs/main/assets/logo.svg" alt="Inertia Logo" width="90"/>
 </p>
 
