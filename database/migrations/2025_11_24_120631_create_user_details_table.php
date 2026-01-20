@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->integer('id_number')->unique();
-            $table->tinyInteger('gender')->comment('0=Female, 1=Male');
-            $table->date('birhdate');
+            $table->tinyInteger('gender')->comment('0=Female, 1=Male')->nullable();
+            $table->date('birthdate')->nullable();
             $table->string('house_number')->comment('address')->nullable();
             $table->string('street')->comment('address')->nullable();
             $table->string('barangay')->comment('address')->nullable();

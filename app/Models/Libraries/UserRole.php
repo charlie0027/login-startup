@@ -16,10 +16,10 @@ class UserRole extends Model
 
     protected $guarded = [];
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
+    // public function users()
+    // {
+    //     return $this->hasMany(User::class);
+    // }
 
     public function userDetails()
     {
@@ -28,6 +28,6 @@ class UserRole extends Model
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class, 'permission_role');
+        return $this->belongsToMany(Permission::class, 'permission_role')->orderBy('description');
     }
 }

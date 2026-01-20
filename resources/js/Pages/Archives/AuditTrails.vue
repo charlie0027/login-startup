@@ -1,11 +1,14 @@
 <script setup>
 import MainLayout from '../Layouts/MainLayout.vue'
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import moment from 'moment';
 
 const props = defineProps({
     audit_trails: Object,
 })
+
+const page = usePage()
+const can = page.props.can || {}
 
 const columns = [
     { key: 'id', label: 'ID' },
@@ -19,10 +22,10 @@ const columns = [
 ]
 </script>
 <template>
-    <MainLayout>
 
-        <Head title="Audit Trails"></Head>
-        <div>
+    <Head title="Audit Trails"></Head>
+    <MainLayout>
+        <div v-if="can.archives_audit_trails">
             <div class="flex justify-between">
                 <h1 class="text-3xl font-bold mb-4">Audit Trails Library</h1>
                 <!-- <ButtonCom v-if="can.updateUserDetails" @click="addUser = true"
@@ -87,6 +90,11 @@ const columns = [
                 </template>
             </Table>
             <Paginator :rows="props.audit_trails.links"></Paginator>
+        </div>
+        <div v-else>
+            <div class="flex justify-center mt-8 text-red-600 dark:text-red-400">
+                <h1>Access Denied. Please contact your Administrator</h1>
+            </div>
         </div>
     </MainLayout>
 </template>

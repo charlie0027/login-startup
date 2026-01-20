@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('created_by');
-        });
-
-        Schema::table('user_details', function (Blueprint $table) {
-            $table->tinyInteger('created_by');
-            $table->string('contact')->nullable();
-            $table->string('bar_code')->nullable();
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->dropColumn('allowed_roles');
         });
     }
 
@@ -27,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('permissions', function (Blueprint $table) {
+            //
+        });
     }
 };

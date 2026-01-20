@@ -1,6 +1,6 @@
 <script setup>
 import MainLayout from '../Layouts/MainLayout.vue'
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import moment from 'moment';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
@@ -14,6 +14,9 @@ const toast = useToast()
 const col_tabs = [
     { name: 'Users', key: 'users' }
 ]
+
+const page = usePage()
+const can = page.props.can || {}
 
 const col_table = [
     { key: 'username', label: 'Username' },
@@ -37,34 +40,44 @@ const restore_user = (deleted_user) => {
 
 </script>
 <template>
-    <MainLayout>
 
-        <Head title="Archive"></Head>
-        <Tabs :tabs="col_tabs">
-            <template #users>
-                <div>
-                    <h1 class="text-3xl font-bold mb-4">Removed Users</h1>
-                </div>
-                <Table :columns="col_table" :rows="props.deleted_users.data" :total="props.deleted_users.total">
-                    <template #table_td="{ row, col }">
-                        <template v-if="col.key === 'name'">
-                            {{ row.last_name }}, {{ row.first_name }} {{ row.middle_name }} {{ row.extension_name }}
+    <Head title="Archive"></Head>
+    <MainLayout>
+        <div v-if="can.archives_archives">
+            <Tabs :tabs="col_tabs">
+                <template #users>
+                    <div>
+                        <h1 class="text-3xl font-bold mb-4">Removed Users</h1>
+                    </div>
+                    <Table :columns="col_table" :rows="props.deleted_users.data" :total="props.deleted_users.total">
+                        <template #table_td="{ row, col }">
+                            <template v-if="col.key === 'name'">
+                                {{ row.last_name }}, {{ row.first_name }} {{ row.middle_name }} {{ row.extension_name }}
+                            </template>
+                            <template v-if="col.key === 'deleted_at'">
+                                {{ moment(row.deleted_at).format('LLL') }}
+                            </template>
+                            <template v-if="col.key === 'actions'">
+                                <div class="py-1" v-if="can.archives_archives_update">
+                                    <ButtonSmall class="bg-green-500 hover:bg-green-400" @click="restore_user(row)"><i
+                                            class="fa fa-recycle"></i><span
+                                            class="hidden md:inline-block ml-1">Restore</span></ButtonSmall>
+                                </div>
+                                <div v-else>
+                                    N/A
+                                </div>
+                            </template>
                         </template>
-                        <template v-if="col.key === 'deleted_at'">
-                            {{ moment(row.deleted_at).format('LLL') }}
-                        </template>
-                        <template v-if="col.key === 'actions'">
-                            <div class="py-1">
-                                <ButtonSmall class="bg-green-500 hover:bg-green-400" @click="restore_user(row)"><i
-                                        class="fa fa-recycle"></i><span
-                                        class="hidden md:inline-block ml-1">Restore</span></ButtonSmall>
-                            </div>
-                        </template>
-                    </template>
-                </Table>
-                <Paginator :rows="props.deleted_users.links"></Paginator>
-            </template>
-        </Tabs>
+                    </Table>
+                    <Paginator :rows="props.deleted_users.links"></Paginator>
+                </template>
+            </Tabs>
+        </div>
+        <div v-else>
+            <div class="flex justify-center mt-8 text-red-600 dark:text-red-400">
+                <h1>Access Denied. Please contact your Administrator</h1>
+            </div>
+        </div>
     </MainLayout>
     <ModalConfirm v-model="restoreModal">
         <template #modal_header>

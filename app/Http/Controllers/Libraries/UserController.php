@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         // Will throw AuthorizationException if denied
-        Gate::authorize('view', UserDetail::class);
+        Gate::authorize('libraries_users', UserDetail::class);
 
         $users = User::with('userDetail.roles')
             ->when(request('searchInput'), function ($query, $searchInput) {
@@ -29,7 +29,7 @@ class UserController extends Controller
                     ->orWhere('last_name', 'like', '%' . $searchInput . '%')
                     ->orWhere('middle_name', 'like', '%' . $searchInput . '%');
             })
-            ->paginate(12)
+            ->paginate(12, ['*'], 'users_page')
             ->withQueryString();
 
         $citymuns = RefCity::orderBy('citymunDesc')->get();
@@ -49,7 +49,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        Gate::authorize('create', UserDetail::class);
+        Gate::authorize('libraries_users_create', UserDetail::class);
         $userCreate =  User::create(array_merge(
             $request->validate([
                 'first_name' => 'required|string|min:3|max:255',
@@ -82,7 +82,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        Gate::authorize('update', UserDetail::class);
+        Gate::authorize('libraries_users_update', UserDetail::class);
         $user = User::with('userDetail')->findOrFail($request->id);
         $user_detail = $user->userDetail;
 
@@ -180,7 +180,7 @@ class UserController extends Controller
 
     public function destroy(Request $request)
     {
-        Gate::authorize('delete', UserDetail::class);
+        Gate::authorize('libraries_users_delete', UserDetail::class);
         $user = User::findOrFail($request->id);
         $user->updated_by = Auth::id();
         $user->save();

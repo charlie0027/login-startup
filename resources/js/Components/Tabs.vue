@@ -5,10 +5,14 @@ const props = defineProps({
     tabs: {
         type: Array, // should be an array of objects
         required: true,
+    },
+    initial: {
+        type: String,
+        default: null
     }
 })
 
-const activeTab = ref(props.tabs[0]?.key)
+const activeTab = ref(props.initial || (props.tabs[0]?.key ?? null))
 
 function setActive(tabKey) {
     activeTab.value = tabKey

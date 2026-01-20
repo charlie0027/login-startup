@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-
+use App\Models\Libraries\Permission;
 use App\Models\UserDetail;
 use App\Policies\UserRolePolicy;
 use Illuminate\Support\Facades\Auth;
@@ -27,22 +27,15 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(UserDetail::class, UserRolePolicy::class);
 
+        Permission::pluck('name')->each(function ($name) {
+            Gate::define($name, function ($user) use ($name) {
+                return $user->userDetail?->hasPermission($name);
+            });
+        });
+
         // Share authorization state with all Inertia pages
         Inertia::share([
-            'can' => function () {
-                $user = Auth::user();
-                $detail = $user?->userDetail;
-                return [
-                    'view' => Gate::allows('view', $detail),
-                    'create' => Gate::allows('create', $detail),
-                    'update' => Gate::allows('update', $detail),
-                    'delete' => Gate::allows('delete', $detail),
-                    'export' => Gate::allows('export', $detail),
-                    'print' => Gate::allows('print', $detail),
-                    'view_sidenav' => Gate::allows('view_sidenav', $detail),
-                    'view_tab' => Gate::allows('view_tab', $detail),
-                ];
-            },
+            'can' => fn() => collect(Permission::pluck('name'))->mapWithKeys(fn($name) => [$name => Gate::allows($name)])
         ]);
     }
 }

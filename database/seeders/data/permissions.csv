@@ -1,0 +1,46 @@
+"id","name","description","created_at","updated_at","deleted_at"
+"1","view","View","2025-12-07 16:01:18","2026-01-20 05:32:09","2026-01-20 05:32:09"
+"2","create","Create","2025-12-07 16:01:18","2026-01-20 05:33:42","2026-01-20 05:33:42"
+"3","update","Update","2025-12-07 16:02:32","2026-01-20 05:33:47","2026-01-20 05:33:47"
+"4","delete","Delete","2025-12-07 17:05:29","2026-01-20 05:33:49","2026-01-20 05:33:49"
+"5","export","Export","2025-12-07 17:05:29","2026-01-20 05:33:51","2026-01-20 05:33:51"
+"6","print","Print","2025-12-07 17:05:29","2026-01-20 05:33:54","2026-01-20 05:33:54"
+"7","view_sidenav","View Side Nav","2025-12-07 17:05:29","2026-01-20 03:02:18","2026-01-20 03:02:18"
+"8","view_tab","View Tab","2025-12-07 17:05:29","2026-01-20 03:02:20","2026-01-20 03:02:20"
+"9","sample","sample","2026-01-19 14:12:44","2026-01-19 14:46:42","2026-01-19 14:46:42"
+"10","libraries_users","Libraries - Users","2026-01-20 02:36:57","2026-01-20 04:56:45",NULL
+"11","libraries_user_roles","Libraries - User Roles","2026-01-20 03:03:30","2026-01-20 04:56:57",NULL
+"12","settings_setting","Settings - Setting","2026-01-20 03:04:00","2026-01-20 04:57:05",NULL
+"13","archives_archives_create","Archives - Archive (Create)","2026-01-20 03:04:45","2026-01-20 11:13:16",NULL
+"14","reports_user_summary","Reports - User Summary","2026-01-20 03:05:13","2026-01-20 04:57:45",NULL
+"15","archives_audit_trails","Archives - Audit Trails","2026-01-20 03:15:18","2026-01-20 04:57:53",NULL
+"16","libraries_user_roles_create","Libraries - User Roles (Create)","2026-01-20 05:07:04","2026-01-20 05:08:25",NULL
+"17","libraries_user_roles_update","Libraries - User Roles (Update)","2026-01-20 05:08:10","2026-01-20 05:08:10",NULL
+"18","libraries_user_roles_delete","Libraries - User Roles (Delete)","2026-01-20 05:09:37","2026-01-20 05:09:37",NULL
+"19","libraries_user_roles_export","Libraries - User Roles (Export)","2026-01-20 05:10:00","2026-01-20 05:10:00",NULL
+"20","libraries_user_roles_print","Libraries - User Roles (Print)","2026-01-20 05:10:46","2026-01-20 05:10:46",NULL
+"21","libraries_users_create","Libraries - Users (Create)","2026-01-20 05:45:40","2026-01-20 05:45:40",NULL
+"22","libraries_users_update","Libraries - Users (Update)","2026-01-20 05:46:20","2026-01-20 05:46:20",NULL
+"23","libraries_users_delete","Libraries - Users (Delete)","2026-01-20 05:46:33","2026-01-20 05:46:33",NULL
+"24","libraries_users_export","Libraries - Users (Export)","2026-01-20 05:47:23","2026-01-20 05:47:23",NULL
+"25","libraries_users_print","Libraries - Users (Print)","2026-01-20 05:47:52","2026-01-20 05:47:52",NULL
+"26","settings_setting_create","Settings - Setting (Create)","2026-01-20 10:43:37","2026-01-20 10:43:37",NULL
+"27","settings_setting_update","Settings - Setting (Update)","2026-01-20 10:43:54","2026-01-20 10:43:54",NULL
+"28","settings_setting_delete","Settings - Setting (Delete)","2026-01-20 10:44:13","2026-01-20 10:44:13",NULL
+"29","settings_setting_export","Settings - Setting (Export)","2026-01-20 10:44:32","2026-01-20 10:44:32",NULL
+"30","settings_setting_print","Settings - Setting (Print)","2026-01-20 10:44:52","2026-01-20 10:44:52",NULL
+"31","archives_archives","Archives - Archive","2026-01-20 11:14:27","2026-01-20 11:14:27",NULL
+"32","archives_archives_update","Archives - Archive (Update)","2026-01-20 11:15:24","2026-01-20 11:15:33",NULL
+"33","archives_archives_delete","Archives - Archive (Delete)","2026-01-20 11:15:51","2026-01-20 11:15:51",NULL
+"34","archives_archives_export","Archives - Archive (Export)","2026-01-20 11:16:09","2026-01-20 11:16:09",NULL
+"35","archives_archives_print","Archives - Archive (Print)","2026-01-20 11:16:25","2026-01-20 11:16:25",NULL
+"36","archives_audit_trails_create","Archives - Audit Trails (Create)","2026-01-20 11:52:19","2026-01-20 11:52:19",NULL
+"37","archives_audit_trails_update","Archives - Audit Trails (Update)","2026-01-20 11:53:05","2026-01-20 11:53:05",NULL
+"38","archives_audit_trails_delete","Archives - Audit Trails (Delete)","2026-01-20 11:53:28","2026-01-20 11:53:28",NULL
+"39","archives_audit_trails_export","Archives - Audit Trails (Export)","2026-01-20 11:53:50","2026-01-20 11:53:50",NULL
+"40","archives_audit_trails_print","Archives - Audit Trails (Print)","2026-01-20 11:54:08","2026-01-20 11:54:08",NULL
+"41","reports_user_summary_create","Reports - User Summary (Create)","2026-01-20 11:59:13","2026-01-20 11:59:13",NULL
+"42","reports_user_summary_update","Reports - User Summary (Update)","2026-01-20 11:59:35","2026-01-20 11:59:35",NULL
+"43","reports_user_summary_delete","Reports - User Summary (Delete)","2026-01-20 11:59:55","2026-01-20 11:59:55",NULL
+"44","reports_user_summary_export","Reports - User Summary (Export)","2026-01-20 12:01:01","2026-01-20 12:01:01",NULL
+"45","reports_user_summary_print","Reports - User Summary (Print)","2026-01-20 12:01:24","2026-01-20 12:01:24",NULL

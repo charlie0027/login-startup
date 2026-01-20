@@ -32,7 +32,7 @@ function toggle(event) {
 </script>
 
 <template>
-    <div>
+    <div class="text-gray-900 dark:text-white">
         <label class="inline-flex cursor-pointer relative">
             <!-- Hidden checkbox -->
             <input type="checkbox" :checked="modelValue" @change="toggle" class="sr-only peer" v-bind="$attrs" />
@@ -47,7 +47,7 @@ function toggle(event) {
             </div>
 
             <!-- Label -->
-            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">
+            <span class="ml-3 text-sm font-medium">
                 {{ label }} ({{ modelValue ? enabledText : disabledText }})
             </span>
         </label>

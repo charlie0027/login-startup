@@ -193,15 +193,23 @@ const openUpdateRoleModal = (user) => {
     updateRole.value = true
 }
 
+// For tabs uncomment this
+// const tabs = [
+//     { name: 'User Role', key: 'user_role' },
+//     { name: 'Permissions', key: 'permissions' }
+// ]
+// const tabParam = new URLSearchParams(page.url.split('?')[1] || '').get('tab')
+// const currentTab = tabParam || (tabs.length > 0 ? tabs[0].key : null)
+
 </script>
 <template>
 
     <Head title="Libraries - Users"></Head>
     <MainLayout>
-        <div>
+        <div v-if="can.libraries_users">
             <div class="flex justify-between">
                 <h1 class="text-3xl font-bold mb-4">Users Library</h1>
-                <ButtonCom v-if="can.create" @click="addUser = true"
+                <ButtonCom v-if="can.libraries_users_create" @click="addUser = true"
                     class="mb-4 border bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2">
                     <i class="fa fa-plus-circle"></i><span class="hidden md:inline  ml-4">Add New User</span>
                 </ButtonCom>
@@ -219,22 +227,28 @@ const openUpdateRoleModal = (user) => {
                 <!-- TD -->
                 <template v-slot:table_td="{ row, col }">
                     <template v-if="col.key === 'action'">
-                        <div class="flex space-x-2">
-                            <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white" @click="openEditModal(row)">
+                        <div v-if="can.libraries_users_update || can.libraries_users_delete" class="flex space-x-2">
+                            <ButtonSmall v-if="can.libraries_users_update"
+                                class="bg-blue-500 hover:bg-blue-700 text-white" @click="openEditModal(row)">
                                 <i class="fa fa-pencil-square"></i><span class="hidden md:inline">Edit</span>
                             </ButtonSmall>
-                            <ButtonSmall class="bg-red-500 hover:bg-red-600 text-white" @click="openDeleteModal(row)">
+                            <ButtonSmall v-if="can.libraries_users_delete"
+                                class="bg-red-500 hover:bg-red-600 text-white" @click="openDeleteModal(row)">
                                 <i class="fa fa-trash"></i><span class="hidden md:inline">Delete</span>
                             </ButtonSmall>
-                            <ButtonSmall class="bg-orange-500 hover:bg-orange-600 text-white"
-                                @click="openChangePwModal(row)">
+                            <ButtonSmall v-if="can.libraries_users_update"
+                                class="bg-orange-500 hover:bg-orange-600 text-white" @click="openChangePwModal(row)">
                                 <i class="fa fa-unlock"></i><span class="hidden md:inline">Change Password</span>
                             </ButtonSmall>
-                            <ButtonSmall class="bg-blue-500 hover:bg-blue-700 text-white"
-                                @click="openUpdateRoleModal(row)">
+                            <ButtonSmall v-if="can.libraries_users_update"
+                                class="bg-blue-500 hover:bg-blue-700 text-white" @click="openUpdateRoleModal(row)">
                                 <i class="fa fa-user-plus"></i><span class="hidden md:inline">Update Role</span>
                             </ButtonSmall>
                         </div>
+                        <div v-else>
+                            <p class="text-center">N/A</p>
+                        </div>
+
                     </template>
                     <template v-if="col.key === 'last_name'">
                         <strong class="uppercase">{{ row.last_name }}, {{ row.first_name }} {{ row.middle_name }}
@@ -246,6 +260,11 @@ const openUpdateRoleModal = (user) => {
                 </template>
             </Table>
             <Paginator :rows="props.users.links"></Paginator>
+        </div>
+        <div v-else>
+            <div class="flex justify-center mt-8 text-red-600 dark:text-red-400">
+                <h1>Access Denied. Please contact your Administrator</h1>
+            </div>
         </div>
     </MainLayout>
 
@@ -409,7 +428,7 @@ const openUpdateRoleModal = (user) => {
                                 id="birthdate"></Input>
                             <Error v-if="form_edit.errors['user_detail.birthdate']">{{
                                 form_edit.errors['user_detail.birthdate']
-                            }}</Error>
+                                }}</Error>
                         </div>
                         <div>
                             <SelectInput v-model="form_edit.user_detail.gender" label="Gender" id="gender">
@@ -443,7 +462,7 @@ const openUpdateRoleModal = (user) => {
                                 placeholder="Street" title="Street"></Input>
                             <Error v-if="form_edit.errors['user_detail.street']">{{
                                 form_edit.errors['user_detail.street']
-                            }}
+                                }}
                             </Error>
                         </div>
                         <div class="col-span-2">
@@ -459,7 +478,7 @@ const openUpdateRoleModal = (user) => {
                             </SelectInput>
                             <Error v-if="form_edit.errors['user_detail.province']">{{
                                 form_edit.errors['user_detail.province']
-                            }}
+                                }}
                             </Error>
                         </div>
                         <div class="col-span-2">
@@ -490,7 +509,7 @@ const openUpdateRoleModal = (user) => {
                             </SelectInput>
                             <Error v-if="form_edit.errors['user_detail.barangay']">{{
                                 form_edit.errors['user_detail.barangay']
-                            }}
+                                }}
                             </Error>
                         </div>
                     </div>
@@ -500,7 +519,7 @@ const openUpdateRoleModal = (user) => {
                                 label="ID number" title="id_number"></Input>
                             <Error v-if="form_edit.errors['user_detail.id_number']">{{
                                 form_edit.errors['user_detail.id_number']
-                            }}
+                                }}
                             </Error>
                         </div>
                     </div>

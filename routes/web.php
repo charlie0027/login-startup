@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\TwoFactorAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Libraries\PermissionController;
 use App\Http\Controllers\Reports\UserReportController;
 use App\Http\Controllers\Setting\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,11 @@ Route::middleware(['auth', 'login.message', 'email.verification.toggle', 'two.fa
     Route::post('/libraries/user_roles', [UserRoleController::class, 'store'])->name('libraries.user_role_store');
     Route::put('/libraries/user_roles/{id}/update', [UserRoleController::class, 'update'])->name('libraries.user_role_update');
     Route::put('/libraries/user_roles/{id}/deactivate', [UserRoleController::class, 'deactivate'])->name('libraries.user_role_deactivate');
+
+    //Libraries/Permission (Inside User Roles Sidebar)
+    Route::post('/libraries/permission', [PermissionController::class, 'store'])->name('libraries.permission_store');
+    Route::put('/libraries/permission/{id}/update', [PermissionController::class, 'update'])->name('libraries.permission_update');
+    Route::delete('/libraries/permission/{id}/destroy', [PermissionController::class, 'destroy'])->name('permission_destroy');
 
     //Settings/Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

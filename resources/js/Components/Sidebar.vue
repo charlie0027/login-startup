@@ -40,10 +40,11 @@ aside {
                         class="hidden md:inline">Dashboard</span> </div>
 
             </Link>
-            <div v-if="can.view_sidenav">
+            <div v-if="Object.keys(can).some(key => key.startsWith('libraries') && can[key])">
                 <h2 class="text-2xl font-bold uppercase hidden md:inline"
                     :class="{ 'text-blue-600 dark:text-blue-300': $page.url.startsWith('/libraries') }">Libraries</h2>
-                <Link href="/libraries/users" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                <Link v-if="can.libraries_users" href="/libraries/users"
+                    class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                     :class="{ 'font-bold underline underline-offset-4 text-blue-600 dark:text-blue-300': $page.url.startsWith('/libraries/users') }"
                     view-transition preserve-scroll>
                     <div class="flex items-center gap-2">
@@ -51,7 +52,7 @@ aside {
                     </div>
 
                 </Link>
-                <Link href="/libraries/user_roles"
+                <Link v-if="can.libraries_user_roles" href="/libraries/user_roles"
                     class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                     :class="{ 'font-bold underline underline-offset-4 text-blue-600 dark:text-blue-300': $page.url.startsWith('/libraries/user_roles') }"
                     view-transition preserve-scroll>
@@ -61,11 +62,12 @@ aside {
 
                 </Link>
             </div>
-            <div v-if="can.view_sidenav">
+            <div v-if="Object.keys(can).some(key => key.startsWith('settings') && can[key])">
                 <h2 class="text-2xl font-bold uppercase hidden md:inline"
                     :class="{ 'text-blue-600 dark:text-blue-300': $page.url.startsWith('/settings') }">Setting</h2>
 
-                <Link href="/settings" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                <Link v-if="can.settings_setting" href="/settings"
+                    class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                     :class="{ 'font-bold underline underline-offset-4 text-blue-600 dark:text-blue-300': $page.url.startsWith('/settings') }"
                     view-transition preserve-scroll>
                     <div class="flex items-center gap-2"> <i class="fas fa-cogs"></i> <span
@@ -74,18 +76,19 @@ aside {
                 </Link>
             </div>
 
-            <div v-if="can.view_sidenav">
+            <div v-if="Object.keys(can).some(key => key.startsWith('archives') && can[key])">
                 <h2 class="text-2xl font-bold uppercase hidden md:inline"
                     :class="{ 'text-blue-600 dark:text-blue-300': $page.url.startsWith('/archives') }">Archives</h2>
 
-                <Link href="/archives/archives" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                <Link v-if="can.archives_archives" href="/archives/archives"
+                    class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                     :class="{ 'font-bold underline underline-offset-4 text-blue-600 dark:text-blue-300': $page.url.startsWith('/archives/archives') }"
                     view-transition preserve-scroll>
                     <div class="flex items-center gap-2"> <i class="fas fa-archive"></i> <span
                             class="hidden md:inline">Archives</span> </div>
 
                 </Link>
-                <Link href="/archives/audit_trails"
+                <Link v-if="can.archives_audit_trails" href="/archives/audit_trails"
                     class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                     :class="{ 'font-bold underline underline-offset-4 text-blue-600 dark:text-blue-300': $page.url.startsWith('/archives/audit_trails') }"
                     view-transition preserve-scroll>
@@ -94,11 +97,11 @@ aside {
 
                 </Link>
             </div>
-            <div v-if="can.view_sidenav">
+            <div v-if="Object.keys(can).some(key => key.startsWith('reports') && can[key])">
                 <h2 class="text-2xl font-bold uppercase hidden md:inline"
                     :class="{ 'text-blue-600 dark:text-blue-300': $page.url.startsWith('/reports') }">Reports</h2>
 
-                <Link href="/reports/user_reports"
+                <Link v-if="can.reports_user_summary" href="/reports/user_reports"
                     class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                     :class="{ 'font-bold underline underline-offset-4 text-blue-600 dark:text-blue-300': $page.url.startsWith('/reports/user_reports') }"
                     view-transition preserve-scroll>

@@ -57,11 +57,11 @@ function toggleTwoFactorAuthentication() {
 
     <Head title="Settings"></Head>
     <MainLayout>
-        <div class="border rounded p-4">
+        <div class="border rounded p-4" v-if="can.settings_setting">
             <div class="flex items-center mb-4">
                 <h1 class="text-2xl uppercase mr-2">Security Settings</h1>
                 <Tooltip>
-                    <div v-if="!can.update" class="bg-red-200 rounded p-2">
+                    <div v-if="!can.settings_setting_update" class="bg-red-200 rounded p-2">
                         <span class="text-xs text-red-500 mb-4 font-bold text-justify">*Note:
                             Your
                             current
@@ -83,7 +83,7 @@ function toggleTwoFactorAuthentication() {
                         <!-- Email Verification Toggle -->
                         <InputToggle v-model="form.requireEmailVerification" label="Require Email Verification"
                             enabledText="Enabled" disabledText="Disabled" color="green"
-                            @update:modelValue="toggleEmailVerification" :disabled="!can.update" />
+                            @update:modelValue="toggleEmailVerification" :disabled="!can.settings_setting_update" />
                     </div>
                 </div>
 
@@ -92,15 +92,19 @@ function toggleTwoFactorAuthentication() {
                     <div class="flex">
                         <InputToggle v-model="form.requireTwoFactorAuth" label="Require Two Factor Authentication"
                             enabledText="Enabled" disabledText="Disabled" color="blue"
-                            @update:modelValue="toggleTwoFactorAuthentication" :disabled="!can.update" />
+                            @update:modelValue="toggleTwoFactorAuthentication"
+                            :disabled="!can.settings_setting_update" />
                     </div>
 
 
                 </div>
             </div>
         </div>
-
-
+        <div v-else>
+            <div class="flex justify-center mt-8 text-red-600 dark:text-red-400">
+                <h1>Access Denied. Please contact your Administrator</h1>
+            </div>
+        </div>
     </MainLayout>
 
 </template>
