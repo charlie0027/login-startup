@@ -76,11 +76,11 @@ npm run dev
 ```
 
 ### 9. Super Admin already seeded for testing
-### Username
+#### Username
 ```bash
 superadmin
 ```
-### Password
+#### Password
 ```bash
 admin123
 ```
